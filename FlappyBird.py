@@ -194,7 +194,7 @@ def main():
         add_pipe = False
         rem = []
         for pipe in pipes:
-            if pipe.collide(bird) or base.collide(bird):
+            if pipe.collide(bird) or base.collide(bird) or bird.y <= 0:
                 print('Game Over')
                 print('Your score is ' , score)
                 run = False 
