@@ -150,6 +150,20 @@ class Base:
         win.blit(self.IMG, (self.x1, self.y))
         win.blit(self.IMG, (self.x2, self.y))
 
+    def collide(self, bird):
+        bird_mask = bird.get_mask()
+        base_mask = pygame.mask.from_surface(self.IMG)
+
+        x1_offset = (self.x1 - bird.x,  round(self.y) - round(bird.y))
+        x2_offset = (self.x2 - bird.x,  round(self.y) - round(bird.y))
+
+        x1_point = bird_mask.overlap(base_mask, x1_offset)  
+        x2_point = bird_mask.overlap(base_mask, x2_offset)   
+
+        if x1_point or x2_point:
+            return True
+        return False
+
 def draw_window(win, bird, pipes, base):
     win.blit(BG_IMG, (0, 0))
     for pipe in pipes:
@@ -175,12 +189,12 @@ def main():
                 run = False
             if event.type == pygame.KEYDOWN:
                 if event.key & pygame.K_SPACE:
-                    bird.jump()
+                    bird.jump()    
         bird.move()
         add_pipe = False
         rem = []
         for pipe in pipes:
-            if pipe.collide(bird):
+            if pipe.collide(bird) or base.collide(bird):
                 print('Game Over')
                 print('Your score is ' , score)
                 run = False 
